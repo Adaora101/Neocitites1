@@ -3,22 +3,27 @@ name: Deploy to Neocities
 on:
   push:
     branches:
-      - main  # Or your default branch name
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout repository
       uses: actions/checkout@v3
 
+    - name: Install Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.2' # You can use another version if needed
+
     - name: Install Neocities CLI
-      run: pip install neocities
+      run: gem install neocities
 
     - name: Deploy to Neocities
       env:
-        NECI_API_KEY: ${{ secrets.NEOCITIES_API_KEY }}
+        NEOCITIES_API_KEY: ${{ secrets.NEOCITIES_API_KEY }}
       run: |
-        echo $NECI_API_KEY > api_key.txt
-        neocities push . --key-file api_key.txt
+        echo "${NEOCITIES_API_KEY}" > ~/.config/neocities/config
+        neocities push .
