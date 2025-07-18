@@ -16,7 +16,7 @@ jobs:
     - name: Install Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: '3.2' # You can use another version if needed
+        ruby-version: '3.2'
 
     - name: Install Neocities CLI
       run: gem install neocities
@@ -25,5 +25,6 @@ jobs:
       env:
         NEOCITIES_API_KEY: ${{ secrets.NEOCITIES_API_KEY }}
       run: |
-        echo "${NEOCITIES_API_KEY}" > ~/.config/neocities/config
+        mkdir -p ~/.config/neocities
+        echo "key: ${NEOCITIES_API_KEY}" > ~/.config/neocities/config
         neocities push .
