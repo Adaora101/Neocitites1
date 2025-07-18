@@ -1,0 +1,24 @@
+name: Deploy to Neocities
+
+on:
+  push:
+    branches:
+      - main  # Or your default branch name
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install Neocities CLI
+      run: pip install neocities
+
+    - name: Deploy to Neocities
+      env:
+        NECI_API_KEY: ${{ secrets.NEOCITIES_API_KEY }}
+      run: |
+        echo $NECI_API_KEY > api_key.txt
+        neocities push . --key-file api_key.txt
